@@ -85,7 +85,7 @@ for j = [1:length(out.phi)]
 end
 
 GifName = 'pendulum.gif';
-delay = (30/316)/playback_speed;
+delay = (30/length(out.x))/playback_speed;
 for ii = 1:length(out.x)
     [A, ~] = imread(['Frame ' num2str(ii) '.png']);
     [X, map] = rgb2ind(A, 256);
