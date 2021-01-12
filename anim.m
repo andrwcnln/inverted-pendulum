@@ -81,12 +81,11 @@ for j = [1:length(out.phi)]
         set(plot_x_dot_phi_dot(1),'ydata',out.x_dot(1:j));
         set(plot_x_dot_phi_dot(2),'ydata',out.phi_dot(1:j));
     end
-    print(['Frame ' num2str(j)], '-dpng', '-r100');
+    print(['Frame ' num2str(j)], '-dpng', '-r300');
 end
 
 GifName = 'pendulum.gif';
-ii = 1;
-delay = out.tout(ii+1)-out.tout(ii)/playback_speed;
+delay = (30/316)/playback_speed;
 for ii = 1:length(out.x)
     [A, ~] = imread(['Frame ' num2str(ii) '.png']);
     [X, map] = rgb2ind(A, 256);
