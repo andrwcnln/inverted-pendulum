@@ -15,4 +15,4 @@ Once this data has been generated, the MATLAB Regression Learner and Neural Netw
 
 'nn_ss.slx' is the Simulink model for the neural networks. When using the Neural Network Fitting tool, the network can be exported as a Simulink block. Simply placing this in position in the subsystem and loading scaling factors should allow a nerual network to control the pendulum.
 
-'anim.m' generates the an output gif file of the system. All it needs in the workspace is a Simulink output object called 'out' with fields 'x', 'phi', 'x_dot' and 'phi_dot'. This will be generated when running any of the simulink models.
+'anim.m' generates the an output gif file of the system. All it needs in the workspace is a Simulink output object called 'out' with fields 'x', 'phi', 'x_dot' and 'phi_dot'. This will be generated when running any of the Simulink models.
