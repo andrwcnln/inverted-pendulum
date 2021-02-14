@@ -2,7 +2,7 @@ clear all,clc;
 
 x_init = [-5:0.1:5];
 x_dot_init = 0;
-phi_init = [-0.3:0.01:0.3];
+phi_init = [-1.56:0.06:1.56];
 phi_dot_init = 0;
 i = 1;
 full_output = struct('x',[],'phi',[],'u',[],'x_dot',[],'phi_dot',[],'u_dot',[]);
