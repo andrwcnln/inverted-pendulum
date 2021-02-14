@@ -1,4 +1,4 @@
-load('main_training_data')
+load('adapt_training_data')
 input = [full_output.x full_output.phi full_output.x_dot full_output.phi_dot full_output.u];
 
 x = max(input(:,1));
@@ -13,6 +13,6 @@ input(:,3) = input(:,3)/x_dot;
 input(:,4) = input(:,4)/phi_dot;
 input(:,5) = input(:,5)/u;
 
-save('main_training_data_scaled.mat','input');
-save('scaling_factors','x','phi','x_dot','phi_dot','u');
+save('adapt_training_data_scaled.mat','input');
+save('adapt_scaling_factors','x','phi','x_dot','phi_dot','u');
 
