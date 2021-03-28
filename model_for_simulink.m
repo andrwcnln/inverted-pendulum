@@ -1,4 +1,6 @@
-load('trainedModel_coarse_tree.mat')
-load('scaling_factors.mat')
-Mdl = trainedModel_coarse_tree.RegressionTree;
+clear all;
+clc;
+load('trainedModel_linear.mat')
+load('main_scaling_factors.mat')
+Mdl = trainedModel_linear.LinearModel;
 saveLearnerForCoder(Mdl,'model');
