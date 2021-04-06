@@ -1,21 +1,20 @@
-clear all,clc; % Remove all varibales and clear the command line
-
 % Set up ranges for initial conditions
 x_init = [-5:0.1:5];
 x_dot_init = 0;
-phi_init = [-0.3:0.01:0.3];
+phi_init = [-0.3:0.1:0.3];
 phi_dot_init = 0;
 i = 1;
 full_output = struct('x',[],'phi',[],'u',[],'x_dot',[],'phi_dot',[],'u_dot',[]); % Initialise output struct
 j = 1;
 % Initialise pendulum parameters
-M = .5;
-m = 0.2;
-coeff = 0.1;
-I = 0.006;
+M = 4;
+m = 1.6;
+coeff = 0.8;
+I = 0.048;
 g = 9.81;
-l = 0.3;
+l = 2.4;
 [A,B,C,D] = state_space(M,m,coeff,I,g,l); % Create state-space matrices from parameters
+output = [];
 
 % Iterate through initial conditions
 for a = [1:length(x_init)]
@@ -26,24 +25,29 @@ for a = [1:length(x_init)]
         B_input = "[" + string(B(1,1)) + ";" + string(B(2,1)) + ";" + string(B(3,1)) + ";" + string(B(4,1)) + "]";
         C_input = "[" + string(C(1,1)) + " " + string(C(1,2)) + " " + string(C(1,3)) + " " + string(C(1,4)) + ";" + string(C(2,1)) + " " + string(C(2,2)) + " " + string(C(2,3)) + " " + string(C(2,4)) + "]";
         D_input = "[" + string(D(1,1)) + ";" + string(D(2,1)) + "]";
-        in(i) = Simulink.SimulationInput("pid_ss");
-        in(i) = in(i).setBlockParameter("pid_ss/State-Space","InitialCondition",init_input,"pid_ss/State-Space","A",A_input,"pid_ss/State-Space","B",B_input,"pid_ss/State-Space","C",C_input,"pid_ss/State-Space","D",D_input);
+        in(i) = Simulink.SimulationInput("nn_ss");
+        in(i) = in(i).setBlockParameter("nn_ss/State-Space","InitialCondition",init_input,"nn_ss/State-Space","A",A_input,"nn_ss/State-Space","B",B_input,"nn_ss/State-Space","C",C_input,"nn_ss/State-Space","D",D_input);
         i = i+1;
         i
     end
 end
 
-out = parsim(in); % Simulate all generated simulations in parallel
-
-% Generate output
-for a = [1:length(out)]
-   full_output.x = [full_output.x; out(1,a).x];
-   full_output.phi = [full_output.phi; out(1,a).phi];
-   full_output.u = [full_output.u; out(1,a).u];
-   full_output.x_dot = [full_output.x_dot; out(1,a).x_dot];
-   full_output.phi_dot = [full_output.phi_dot; out(1,a).phi_dot];
-   full_output.u_dot = [full_output.u_dot; out(1,a).u_dot];
+% Simulate all generated simulations
+for a = [1:i-1]
+    out = sim(in(a));
+    output = [output out];
+    a
 end
 
-save("main_training_data.mat","full_output"); % Save output to file
+% Generate output
+for a = [1:length(output)]
+   full_output.x = [full_output.x; output(1,a).x];
+   full_output.phi = [full_output.phi; output(1,a).phi];
+   full_output.u = [full_output.u; output(1,a).u];
+   full_output.x_dot = [full_output.x_dot; output(1,a).x_dot];
+   full_output.phi_dot = [full_output.phi_dot; output(1,a).phi_dot];
+   full_output.u_dot = [full_output.u_dot; output(1,a).u_dot];
+end
+
+save("performance_data_conjugate_20_retrain_5.mat","full_output"); % Save output to file
     
